@@ -180,7 +180,6 @@ class MainPage(ctk.CTkFrame):
         btn.pack(fill="x", padx=10, pady=5)
 
     def add_table_row(self, row_idx, data):
-        """Creates the labels and badges for a single row in the table"""
         for i, item in enumerate(data):
             
             if item == "В наличии" or item == "Выдана":
