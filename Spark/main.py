@@ -17,7 +17,7 @@ class LibraryApp(ctk.CTk):
 
         self.frames = {}
 
-        for PageClass in (LoginPage, MainPage, DashboardPage):
+        for PageClass in (LoginPage, MainPage, DashboardPage, ReaderPage):
             page_name = PageClass.__name__
             frame = PageClass(parent=self.container, controller=self)
             self.frames[page_name] = frame
