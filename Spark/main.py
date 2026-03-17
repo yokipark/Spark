@@ -11,11 +11,9 @@ class LibraryApp(ctk.CTk):
         self.container = ctk.CTkFrame(self, fg_color="transparent")
         self.container.pack(side="top", fill="both", expand=True)
 
-        
-        # These tell the container to let the grid cell expand
+    
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
-        # -----------------------
 
         self.frames = {}
 
@@ -32,12 +30,11 @@ class LibraryApp(ctk.CTk):
         frame.tkraise()
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        # 1. Make the base frame transparent so it shows the green background
+        
         super().__init__(parent, fg_color="transparent")
         self.controller = controller
 
-        # 2. Create the actual "Card" that will be centered
-        # This matches your 516x732 requirement
+        #Main card
         self.main_card = ctk.CTkFrame(
             self, 
             width=516, 
@@ -45,10 +42,8 @@ class LoginPage(ctk.CTkFrame):
             fg_color="#cfd2d0", 
             corner_radius=20
         )
-        # This is the magic line that centers the card regardless of window size
         self.main_card.place(relx=0.5, rely=0.5, anchor="center")
 
-        # --- Everything below is now attached to self.main_card instead of self ---
 
         # Title
         self.title_label = ctk.CTkLabel(
@@ -137,8 +132,8 @@ class MainPage(ctk.CTkFrame):
         self.create_nav_btn("📊 Отчеты")
         self.create_nav_btn("⚙️ Настройки")
 
-        # --- RIGHT CONTENT CONTAINER ---
-        # This frame holds everything on the right
+        # RIGHT CONTENT CONTAINER
+        
         self.content_container = ctk.CTkFrame(self, fg_color="transparent")
         self.content_container.pack(side="right", fill="both", expand=True, padx=20, pady=20)
 
@@ -156,26 +151,25 @@ class MainPage(ctk.CTkFrame):
         self.export_btn.set("ЭКСПОРТ ⌄")
         self.export_btn.pack(side="right", padx=10)
 
-        # 2. Filters
+        # Filters
         self.filter_frame = ctk.CTkFrame(self.content_container, fg_color="transparent")
         self.filter_frame.pack(fill="x", pady=10)
         for f in ["ЖАНРЫ", "АВТОРЫ", "ГОД", "СТАТУС"]:
             ctk.CTkOptionMenu(self.filter_frame, values=[f], fg_color="#C4C4C4", text_color="black", button_color="#C4C4C4", width=120).pack(side="left", padx=5)
 
-        # 3. THE TABLE (This is likely where it was missing)
+        # THE TABLE 
         self.table_frame = ctk.CTkFrame(self.content_container, fg_color="white", corner_radius=10)
-        # fill="both" and expand=True are CRITICAL here
+        
         self.table_frame.pack(fill="both", expand=True, pady=10)
 
-        # Configure columns so the grid fills the frame width
+        
         headers = ["Инвертарный №", "Название книги", "Автор", "Жанр", "Статус", "Место"]
         for i, h in enumerate(headers):
             lbl = ctk.CTkLabel(self.table_frame, text=h, font=("Helvetica", 13, "bold"), text_color="gray")
             lbl.grid(row=0, column=i, padx=20, pady=15, sticky="nsew")
             self.table_frame.grid_columnconfigure(i, weight=1)
 
-        # --- ADDING DATA ---
-        # We call the method here after the table_frame is created and packed
+        
         self.add_table_row(1, ["90001", "Зимний вечер", "А.С. Пушкин", "Новелл", "В наличии", "4"])
         self.add_table_row(2, ["89045", "Джамиля", "Ч. Айтматов", "Новелл", "Выдана", "27"])
 
@@ -188,7 +182,7 @@ class MainPage(ctk.CTkFrame):
     def add_table_row(self, row_idx, data):
         """Creates the labels and badges for a single row in the table"""
         for i, item in enumerate(data):
-            # Check if this column is the 'Status' column to add a colored badge
+            
             if item == "В наличии" or item == "Выдана":
                 color = "#7C9A82" if item == "В наличии" else "#B8A45F"
                 badge_frame = ctk.CTkFrame(self.table_frame, fg_color=color, corner_radius=10)
@@ -197,7 +191,6 @@ class MainPage(ctk.CTkFrame):
                 lbl = ctk.CTkLabel(badge_frame, text=item, text_color="white", font=("Helvetica", 12))
                 lbl.pack(padx=10, pady=2)
             else:
-                # Regular text for other columns
                 lbl = ctk.CTkLabel(self.table_frame, text=item, text_color="black", font=("Helvetica", 13))
                 lbl.grid(row=row_idx, column=i, padx=5, pady=5)
 class DashboardPage(ctk.CTkFrame):
@@ -205,7 +198,7 @@ class DashboardPage(ctk.CTkFrame):
         super().__init__(parent, fg_color="#D9D9D9")
         self.controller = controller
 
-        # --- Sidebar ---
+        #  Sidebar 
         self.sidebar = ctk.CTkFrame(self, width=280, corner_radius=0, fg_color="#4A6550")
         self.sidebar.pack(side="left", fill="y")
 
@@ -241,7 +234,7 @@ class DashboardPage(ctk.CTkFrame):
         self.create_stat_card(self.stats_frame, "Просрочено", "54", "❗", 1)
         self.create_stat_card(self.stats_frame, "Новые читатели", "19", "👤", 2)
 
-        # Middle Row (Graph Placeholder)
+        #Graph Placeholder
         self.middle_row = ctk.CTkFrame(self.right_container, fg_color="transparent")
         self.middle_row.pack(fill="both", expand=True, pady=10)
         self.middle_row.grid_columnconfigure(0, weight=3)
