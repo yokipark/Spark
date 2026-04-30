@@ -1,11 +1,16 @@
 import customtkinter as ctk
+import database  # <-- 1. Import our new database file
 
 from pages.login import LoginPage
 from pages.book_fund import MainPage
 from pages.dashboard import DashboardPage
 from pages.readers import ReaderPage
 
+# 2. Run the initialization before the app starts
+database.init_db() 
+
 class LibraryApp(ctk.CTk):
+# ... (Keep the rest of your main.py exactly the same)
     def __init__(self):
         super().__init__()
 
