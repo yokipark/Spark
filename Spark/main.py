@@ -5,6 +5,7 @@ from pages.login import LoginPage
 from pages.book_fund import MainPage
 from pages.dashboard import DashboardPage
 from pages.readers import ReaderPage
+from pages.issue_return import IssueReturnPage
 
 # 2. Run the initialization before the app starts
 database.init_db() 
@@ -26,13 +27,11 @@ class LibraryApp(ctk.CTk):
         self.frames = {}
 
         # Loop through classes and initialize them
-        for PageClass in (LoginPage, MainPage, DashboardPage, ReaderPage):
+        for PageClass in (LoginPage, MainPage, DashboardPage, ReaderPage, IssueReturnPage):
             page_name = PageClass.__name__
             frame = PageClass(parent=self.container, controller=self)
             self.frames[page_name] = frame
-            # Stack all pages on top of each other in the same grid spot
             frame.grid(row=0, column=0, sticky="nsew")
-
         # Start with the login screen
         self.show_frame("LoginPage")
 
