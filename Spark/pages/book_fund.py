@@ -14,7 +14,7 @@ class MainPage(ctk.CTkFrame):
         self.create_nav_btn("🏠 Главное", command=lambda: controller.show_frame("DashboardPage"))
         self.create_nav_btn("📋 Книжный фонд", is_active=True, command=lambda: controller.show_frame("MainPage"))
         self.create_nav_btn("👤 Читатель", command=lambda: controller.show_frame("ReaderPage"))
-        self.create_nav_btn("🕒 Выдача/Возврат")
+        self.create_nav_btn("🕒 Выдача/Возврат", command=lambda: controller.show_frame("IssueReturnPage"))
         self.create_nav_btn("📊 Отчеты")
         self.create_nav_btn("⚙️ Настройки")
 
