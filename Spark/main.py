@@ -6,7 +6,8 @@ from pages.book_fund import MainPage
 from pages.dashboard import DashboardPage
 from pages.readers import ReaderPage
 from pages.issue_return import IssueReturnPage
-
+from pages.reports import ReportsPage
+from pages.settings import SettingsPage
 # 2. Run the initialization before the app starts
 database.init_db() 
 
@@ -27,7 +28,8 @@ class LibraryApp(ctk.CTk):
         self.frames = {}
 
         # Loop through classes and initialize them
-        for PageClass in (LoginPage, MainPage, DashboardPage, ReaderPage, IssueReturnPage):
+        # Add ReportsPage to this list!
+        for PageClass in (LoginPage, MainPage, DashboardPage, ReaderPage, IssueReturnPage, ReportsPage, SettingsPage):
             page_name = PageClass.__name__
             frame = PageClass(parent=self.container, controller=self)
             self.frames[page_name] = frame
