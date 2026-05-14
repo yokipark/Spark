@@ -1,13 +1,12 @@
-
 import customtkinter as ctk
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        
-        super().__init__(parent, fg_color="transparent")
+        # FIXED: Changed "transparent" to the exact green color from your design
+        super().__init__(parent, fg_color="#4A6550")
         self.controller = controller
 
-        #Main card
+        # Main card
         self.main_card = ctk.CTkFrame(
             self, 
             width=516, 
@@ -16,7 +15,6 @@ class LoginPage(ctk.CTkFrame):
             corner_radius=20
         )
         self.main_card.place(relx=0.5, rely=0.5, anchor="center")
-
 
         # Title
         self.title_label = ctk.CTkLabel(
@@ -35,6 +33,14 @@ class LoginPage(ctk.CTkFrame):
         )
         self.subtitle.place(x=258, y=220, anchor="center")
 
+        # --- NEW: Error Label (Hidden by default) ---
+        self.error_label = ctk.CTkLabel(
+            self.main_card, 
+            text="", 
+            font=("Helvetica", 12, "bold"), 
+            text_color="#C13C3C" # Red color for errors
+        )
+        self.error_label.place(x=258, y=265, anchor="center")
 
         # ID Entry
         self.idsotrudnika = ctk.CTkLabel(
@@ -43,7 +49,6 @@ class LoginPage(ctk.CTkFrame):
             font=("Helvetica", 12), 
             text_color="black"
         )
-
         self.idsotrudnika.place(x=68, y=300, anchor="w")
 
         self.id_entry = ctk.CTkEntry(
@@ -83,5 +88,27 @@ class LoginPage(ctk.CTkFrame):
         self.login_button.place(x=258, y=550, anchor="center")
 
     def login_action(self):
-        # Switch to MainPage when clicked
-        self.controller.show_frame("DashboardPage")
+        # 1. Grab the text the user typed
+        user_id = self.id_entry.get()
+        password = self.pass_entry.get()
+
+        # 2. Check the credentials (Hardcoded for now)
+        if user_id == "admin" and password == "1234":
+            # SUCCESS!
+            
+            # Reset borders and error text in case they failed previously
+            self.error_label.configure(text="")
+            self.id_entry.configure(border_color="#bebebe", border_width=1)
+            self.pass_entry.configure(border_color="#bebebe", border_width=1)
+            
+            # Clear the entry boxes so they are empty when you log out and come back
+            self.id_entry.delete(0, 'end')
+            self.pass_entry.delete(0, 'end')
+
+            # Switch to Dashboard
+            self.controller.show_frame("DashboardPage")
+        else:
+            # FAILED! Show error text and make borders red
+            self.error_label.configure(text="Неверный ID или пароль!")
+            self.id_entry.configure(border_color="#C13C3C", border_width=2)
+            self.pass_entry.configure(border_color="#C13C3C", border_width=2)
