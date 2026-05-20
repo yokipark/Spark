@@ -8,39 +8,57 @@ from pages.readers import ReaderPage
 from pages.issue_return import IssueReturnPage
 from pages.reports import ReportsPage
 from pages.settings import SettingsPage
+from pages.loading import LoadingPage
 # 2. Run the initialization before the app starts
 database.init_db() 
 
 class LibraryApp(ctk.CTk):
-# ... (Keep the rest of your main.py exactly the same)
     def __init__(self):
         super().__init__()
-
-        self.title("Система Картотеки")
-        self.geometry("1440x1024")
+        self.title("Картотека")
+        self.geometry("1200x800")
         
-        # This container holds all the different pages
+        # Главный контейнер
         self.container = ctk.CTkFrame(self)
-        self.container.pack(side="top", fill="both", expand=True)
+        self.container.pack(fill="both", expand=True)
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
+        
+        # Создаем все экраны
+        self.init_frames()
+        
+        # Запускаем загрузочный экран!
+        self.show_frame("LoadingPage")
+        self.frames["LoadingPage"].animate_loading()
 
-        # Loop through classes and initialize them
-        # Add ReportsPage to this list!
-        for PageClass in (LoginPage, MainPage, DashboardPage, ReaderPage, IssueReturnPage, ReportsPage, SettingsPage):
+    def init_frames(self):
+        """Создает (или пересоздает) все страницы"""
+        # ВНИМАНИЕ: Если у тебя есть ReportsPage, добавь его в эти скобки!
+        for PageClass in (LoadingPage, LoginPage, MainPage, DashboardPage, ReaderPage, IssueReturnPage, ReportsPage, SettingsPage):
             page_name = PageClass.__name__
             frame = PageClass(parent=self.container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-        # Start with the login screen
-        self.show_frame("LoginPage")
 
     def show_frame(self, page_name):
-        """Bring a specific frame to the front"""
+        """Переключает видимый экран"""
         frame = self.frames[page_name]
         frame.tkraise()
+
+    def rebuild_ui(self):
+        """Удаляет старые окна и рисует их заново с новым языком!"""
+        # Удаляем старые фреймы
+        for frame in self.frames.values():
+            frame.destroy()
+        self.frames.clear()
+        
+        # Рисуем заново
+        self.init_frames()
+        
+        # Возвращаем пользователя на страницу настроек
+        self.show_frame("SettingsPage")
 
 if __name__ == "__main__":
     app = LibraryApp()
