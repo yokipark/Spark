@@ -1,30 +1,54 @@
 import customtkinter as ctk
-
+import localization
 class ReportsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent, fg_color="#D9D9D9")
         self.controller = controller
 
-        # --- SIDEBAR ---
-        self.sidebar = ctk.CTkFrame(self, width=280, corner_radius=0, fg_color="#4A6550")
+                # ==========================================
+        # 1. SIDEBAR BACKGROUND (Width: 370px)
+        # ==========================================
+        self.sidebar = ctk.CTkFrame(self, width=370, corner_radius=0, fg_color="#4A6550")
         self.sidebar.pack(side="left", fill="y")
+        self.sidebar.pack_propagate(False) # Locks the width exactly to 370
 
-        ctk.CTkLabel(self.sidebar, text="📖 Картотека", font=("Helvetica", 24, "bold"), text_color="#E6C619").pack(pady=(30, 0))
-        ctk.CTkLabel(self.sidebar, text="библиотекаря", font=("Helvetica", 14), text_color="#E6C619").pack(pady=(0, 30))
+        # ==========================================
+        # 2. INNER PADDING (Figma Specs: 32, 50, 25)
+        # ==========================================
+        self.sidebar_inner = ctk.CTkFrame(self.sidebar, fg_color="transparent")
+        # padx=32 (left/right), pady=(50, 25) (top 50, bottom 25)
+        self.sidebar_inner.pack(fill="both", expand=True, padx=32, pady=(50, 25))
 
-        # Notice: 'Отчеты' is now active!
-        self.create_nav_btn("🏠 Главное", command=lambda: controller.show_frame("DashboardPage"))
-        self.create_nav_btn("📋 Книжный фонд", command=lambda: controller.show_frame("MainPage"))
-        self.create_nav_btn("👤 Читатель", command=lambda: controller.show_frame("ReaderPage"))
-        self.create_nav_btn("🕒 Выдача/Возврат", command=lambda: controller.show_frame("IssueReturnPage"))
-        self.create_nav_btn("📊 Отчеты", is_active=True, command=lambda: controller.show_frame("ReportsPage"))
-        self.create_nav_btn("⚙️ Настройки", command=lambda: controller.show_frame("SettingsPage"))
+        # ==========================================
+        # ZONE A: TOP (Logo)
+        # ==========================================
+        self.logo_zone = ctk.CTkFrame(self.sidebar_inner, fg_color="transparent")
+        self.logo_zone.pack(side="top", fill="x", pady=(0, 40)) # 40px gap below the logo
+        
+        ctk.CTkLabel(self.logo_zone, text="📖 Картотека", font=("Helvetica", 24, "bold"), text_color="#E6C619").pack(anchor="w")
+        ctk.CTkLabel(self.logo_zone, text="библиотекаря", font=("Helvetica", 14), text_color="#E6C619").pack(anchor="w")
 
+        # ==========================================
+        # ZONE B: MIDDLE (Navigation Buttons)
+        # ==========================================
+        self.nav_zone = ctk.CTkFrame(self.sidebar_inner, fg_color="transparent")
+        self.nav_zone.pack(side="top", fill="x")
 
-        # Profile at bottom
-        self.profile_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")
-        self.profile_frame.pack(side="bottom", pady=20, padx=20, fill="x")
-        ctk.CTkLabel(self.profile_frame, text="👤 СЕЗИМАЙ\nБиблиотекарь", text_color="white", justify="left").pack(side="left")
+        self.create_nav_btn(localization.get("main"), command=lambda: controller.show_frame("DashboardPage"))
+        self.create_nav_btn(localization.get("books"), command=lambda: controller.show_frame("MainPage"))
+        self.create_nav_btn(localization.get("readers"), command=lambda: controller.show_frame("ReaderPage"))
+        self.create_nav_btn(localization.get("issue"), command=lambda: controller.show_frame("IssueReturnPage"))
+        self.create_nav_btn(localization.get("reports"), is_active=True, command=lambda: controller.show_frame("ReportsPage"))
+        self.create_nav_btn(localization.get("settings"), command=lambda: controller.show_frame("SettingsPage"))
+
+        # ==========================================
+        # ZONE C: BOTTOM (Profile)
+        # ==========================================
+        self.profile_zone = ctk.CTkFrame(self.sidebar_inner, fg_color="transparent")
+        # side="bottom" forces this to stay at the very bottom, respecting the 25px bottom padding!
+        self.profile_zone.pack(side="bottom", fill="x")
+        
+        ctk.CTkLabel(self.profile_zone, text="👤 СЕЗИМАЙ\nБиблиотекарь", text_color="white", justify="left").pack(side="left")
 
         # --- RIGHT CONTENT CONTAINER ---
         self.content = ctk.CTkFrame(self, fg_color="transparent")
@@ -171,5 +195,5 @@ class ReportsPage(ctk.CTkFrame):
 
     def create_nav_btn(self, text, is_active=False, command=None):
         bg = "#7C9A82" if is_active else "transparent"
-        btn = ctk.CTkButton(self.sidebar, text=text, fg_color=bg, text_color="white", anchor="w", height=45, corner_radius=10, command=command)
+        btn = ctk.CTkButton(self.nav_zone, text=text, fg_color=bg, text_color="white", anchor="w", height=45, corner_radius=10, command=command)
         btn.pack(fill="x", padx=10, pady=5)
