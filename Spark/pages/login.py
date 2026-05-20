@@ -1,5 +1,5 @@
 import customtkinter as ctk
-
+import localization
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         # FIXED: Changed "transparent" to the exact green color from your design
@@ -45,7 +45,7 @@ class LoginPage(ctk.CTkFrame):
         # ID Entry
         self.idsotrudnika = ctk.CTkLabel(
             self.main_card, 
-            text="ID сотрудника", 
+            text=localization.get("ID сотрудника"), 
             font=("Helvetica", 12), 
             text_color="black"
         )
@@ -61,7 +61,7 @@ class LoginPage(ctk.CTkFrame):
         # Password Entry
         self.pass_label = ctk.CTkLabel(
             self.main_card, 
-            text="Пароль", 
+            text=localization.get("Пароль"), 
             font=("Helvetica", 12), 
             text_color="black"
         )
@@ -78,7 +78,7 @@ class LoginPage(ctk.CTkFrame):
         # Login Button
         self.login_button = ctk.CTkButton(
             self.main_card, 
-            text="ВОЙТИ", 
+            text=localization.get("Login"), 
             width=360, height=50, 
             font=("Helvetica", 18, "bold"), 
             fg_color="#304146", hover_color="#1f2c30",
@@ -109,6 +109,6 @@ class LoginPage(ctk.CTkFrame):
             self.controller.show_frame("DashboardPage")
         else:
             # FAILED! Show error text and make borders red
-            self.error_label.configure(text="Неверный ID или пароль!")
+            self.error_label.configure(text=localization.get("incorrect_password"))
             self.id_entry.configure(border_color="#C13C3C", border_width=2)
             self.pass_entry.configure(border_color="#C13C3C", border_width=2)
