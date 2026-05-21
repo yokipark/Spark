@@ -77,6 +77,9 @@ def add_reader(full_name):
     cursor.execute('INSERT INTO readers (full_name, books_current, books_read) VALUES (?, 0, 0)', (full_name,))
     conn.commit()
     conn.close()
+    # Log it for the graph!
+    log_transaction("-", "-", full_name, "Новый читатель")
+
 
 def get_all_readers():
     conn = sqlite3.connect(DB_NAME)
@@ -90,13 +93,14 @@ def get_all_readers():
 def add_book(inv_number, title, author, genre, place):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    # Using INSERT OR IGNORE just in case you try to add the same inv_number twice
     cursor.execute('''
         INSERT OR IGNORE INTO books (inv_number, title, author, genre, place) 
         VALUES (?, ?, ?, ?, ?)
     ''', (inv_number, title, author, genre, place))
     conn.commit()
     conn.close()
+    # Log it for the graph!
+    log_transaction(inv_number, title, "-", "Новая книга")
 
 def get_all_books():
     conn = sqlite3.connect(DB_NAME)
@@ -111,10 +115,10 @@ def get_all_books():
 # ==========================================
 
 def log_transaction(inv_number, book_title, reader_name, action_type):
-    """Saves a record of a book issue or return with the current time."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    time_now = datetime.now().strftime("%H:%M") # Gets time like "14:30"
+    # Now saving Year-Month-Day Hour:Minute
+    time_now = datetime.now().strftime("%Y-%m-%d %H:%M") 
     cursor.execute('''
         INSERT INTO transactions (inv_number, book_title, reader_name, action_type, timestamp)
         VALUES (?, ?, ?, ?, ?)
@@ -122,11 +126,36 @@ def log_transaction(inv_number, book_title, reader_name, action_type):
     conn.commit()
     conn.close()
 
-def get_recent_transactions(limit=5):
-    """Fetches the latest actions for the dashboard bottom table."""
+def get_weekly_activity():
+    """Returns an array of 7 numbers representing actions from Mon to Sun"""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    cursor.execute('SELECT inv_number, book_title, reader_name, action_type, timestamp FROM transactions ORDER BY id DESC LIMIT ?', (limit,))
+    # SQLite strftime('%w') gets the day of the week (0=Sunday, 1=Monday...)
+    cursor.execute('''
+        SELECT strftime('%w', timestamp), COUNT(*) 
+        FROM transactions 
+        WHERE timestamp >= date('now', '-7 days')
+        GROUP BY strftime('%w', timestamp)
+    ''')
+    rows = cursor.fetchall()
+    conn.close()
+    
+    # Empty week array: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
+    counts = [0, 0, 0, 0, 0, 0, 0]
+    for row in rows:
+        day_idx = int(row[0])
+        if day_idx == 0:
+            counts[6] = row[1] # Sunday goes to the end of the array
+        else:
+            counts[day_idx - 1] = row[1] # Mon-Sat
+            
+    return counts
+
+def get_recent_transactions(limit=5):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    # We use substr() to only send "HH:MM" to the UI table so it doesn't look messy
+    cursor.execute('SELECT inv_number, book_title, reader_name, action_type, substr(timestamp, 12, 5) FROM transactions ORDER BY id DESC LIMIT ?', (limit,))
     rows = cursor.fetchall()
     conn.close()
     return rows
