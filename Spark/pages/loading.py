@@ -12,7 +12,7 @@ class LoadingPage(ctk.CTkFrame):
 
         # Пока оставляем эмодзи книги. Потом ты легко заменишь этот Label на CTkImage с твоим прозрачным PNG!
         ctk.CTkLabel(self.center_frame, text="📖", font=("Helvetica", 80), text_color="#D1C4A3").pack(pady=(0, 10))
-        ctk.CTkLabel(self.center_frame, text="S p a r k", font=("Helvetica", 56, "bold"), text_color="white").pack()
+        ctk.CTkLabel(self.center_frame, text="S p a r k", font=("Itim", 56, "bold"), text_color="white").pack()
 
         # Полоса загрузки внизу
         self.progress_bar = ctk.CTkProgressBar(self, width=500, height=4, fg_color="#2A382D", progress_color="#D1C4A3", corner_radius=0)
