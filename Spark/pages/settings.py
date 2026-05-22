@@ -8,6 +8,7 @@ from tkinter import messagebox
 
 class SettingsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
+        # Стартовое значение цвета под light-тему
         super().__init__(parent, fg_color="#FFFFFF")
         self.controller = controller
 
@@ -130,7 +131,7 @@ class SettingsPage(ctk.CTkFrame):
         )
         sys_box.pack(side="left", fill="both", expand=True, padx=(0, 20))
 
-        # 2. ИНТЕРФЕЙС (По центру - Полное выравнивание по твоей картинке)
+        # 2. ИНТЕРФЕЙС (По центру)
         int_box = ctk.CTkFrame(bottom_frame, fg_color="#D9D9D9", corner_radius=16, border_width=1, border_color="black")
         int_box.pack(side="left", fill="both", expand=True, padx=0)
         int_box.pack_propagate(False)
@@ -138,7 +139,10 @@ class SettingsPage(ctk.CTkFrame):
         
         theme_row = ctk.CTkFrame(int_box, fg_color="transparent")
         theme_row.pack(fill="x", padx=25, pady=4)
-        ctk.CTkSwitch(theme_row, text=localization.get("dark_mode", "Темная тема"), text_color="black", progress_color="#294730", font=("Inter", 14)).pack(side="left")
+        
+        # Переключатель ТЕМЫ (Добавлен обработчик command)
+        self.theme_switch = ctk.CTkSwitch(theme_row, text=localization.get("dark_mode", "Темная тема"), text_color="black", progress_color="#294730", font=("Inter", 14), command=self.toggle_dark_mode)
+        self.theme_switch.pack(side="left")
 
         # Надпись «Акцентные цвета»
         ctk.CTkLabel(int_box, text="Акцентные цвета", font=("Inter", 15, "bold"), text_color="black").pack(pady=(20, 10), anchor="w", padx=25)
@@ -194,7 +198,6 @@ class SettingsPage(ctk.CTkFrame):
         self.library_info_editor = ctk.CTkTextbox(usr_box, fg_color="#F5F4F2", text_color="black", font=("Inter", 14), corner_radius=12, border_width=1, border_color="#B0B0B0")
         self.library_info_editor.pack(fill="both", expand=True, padx=20, pady=(0, 20))
         
-        # Точный текст из твоей Figma-карточки
         figma_text = (
             "Название: Городская библиотека им. А.С. Пушкина\n"
             "с доступом к электронным ресурсам.\n"
@@ -205,6 +208,23 @@ class SettingsPage(ctk.CTkFrame):
         )
         self.library_info_editor.insert("0.0", figma_text)
 
+    def toggle_dark_mode(self):
+        """Вызывает глобальную смену темы через корневой контроллер приложения"""
+        if self.theme_switch.get() == 1:
+            # Если тумблер включен — отправляем команду "dark" в контроллер
+            if hasattr(self.controller, "change_global_theme"):
+                self.controller.change_global_theme("dark")
+            else:
+                # Фоллбэк, если метода в main.py еще нет
+                ctk.set_appearance_mode("dark")
+                self.configure(fg_color="#6D6D6D")
+        else:
+            # Если выключен — отправляем "light"
+            if hasattr(self.controller, "change_global_theme"):
+                self.controller.change_global_theme("light")
+            else:
+                ctk.set_appearance_mode("light")
+                self.configure(fg_color="#FFFFFF")
     def change_app_language(self, choice):
         localization.set_lang(choice)
         if hasattr(self.controller, "rebuild_ui"):
