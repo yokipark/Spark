@@ -144,44 +144,77 @@ class MainPage(ctk.CTkFrame):
                 else:
                     ctk.CTkLabel(self.table_frame, text=str(item), text_color="black", font=("Inter", 13)).grid(row=row_idx, column=col_idx, padx=5, pady=10)
             ctk.CTkFrame(self.table_frame, height=1, fg_color="#A0A0A0").grid(row=row_idx*2+1, column=0, columnspan=6, sticky="ew")
-
-    # --- МОДАЛЬНОЕ ОКНО ---
+    
     def show_add_book_modal(self):
         if hasattr(self, "modal_frame") and self.modal_frame.winfo_exists():
             return
 
-        self.modal_frame = ctk.CTkFrame(self.content_container, fg_color="#E8E8E8", corner_radius=15, border_width=1, border_color="#B0B0B0")
-        self.modal_frame.place(relx=0.5, rely=0.4, anchor="center") 
-        self.modal_frame.pack_propagate(False)
-        self.modal_frame.configure(width=750, height=350)
+        # Главный контейнер модального окна ( 797 x 597 ) возвращается на right_container
+        self.modal_frame = ctk.CTkFrame(self.content_container, width=797, height=597, fg_color="#E8E8E8", corner_radius=9, border_width=1, border_color="#B0B0B0")
+        self.modal_frame.place(relx=0.5, rely=0.5, anchor="center") 
+        self.modal_frame.grid_propagate(False)
 
-        inner = ctk.CTkFrame(self.modal_frame, fg_color="transparent")
-        inner.place(relx=0.5, rely=0.5, anchor="center")
+        # Контейнер-обертка для элементов
+        fields_wrap = ctk.CTkFrame(self.modal_frame, width=797, height=597, fg_color="transparent")
+        fields_wrap.place(x=0, y=0)
 
-        ctk.CTkLabel(inner, text=localization.get("book_title"), text_color="black", font=("Inter", 13)).grid(row=0, column=0, padx=10, pady=(0, 5), sticky="w")
-        ctk.CTkLabel(inner, text=localization.get("author"), text_color="black", font=("Inter", 13)).grid(row=0, column=1, padx=10, pady=(0, 5), sticky="w")
-        ctk.CTkLabel(inner, text=localization.get("inv_num"), text_color="black", font=("Inter", 13)).grid(row=0, column=2, padx=10, pady=(0, 5), sticky="w")
+        # Координаты и зазоры по макету Figma
+        x_col0, x_col1, x_col2 = 42, 310, 578
+        y_row1_lbl = 40
+        y_row1_entry = y_row1_lbl + 60
+        y_row2_lbl = y_row1_entry + 95 + 46
+        y_row2_entry = y_row2_lbl + 60
 
-        self.entry_title = ctk.CTkEntry(inner, width=220, height=45, fg_color="#D9D9D9", text_color="black", font=("Inter", 14))
-        self.entry_title.grid(row=1, column=0, padx=10, pady=(0, 20))
-        
-        self.entry_author = ctk.CTkEntry(inner, width=220, height=45, fg_color="#D9D9D9", text_color="black", font=("Inter", 14))
-        self.entry_author.grid(row=1, column=1, padx=10, pady=(0, 20))
-        
-        self.entry_id = ctk.CTkEntry(inner, width=150, height=45, fg_color="#D9D9D9", text_color="black", font=("Inter", 14))
-        self.entry_id.grid(row=1, column=2, padx=10, pady=(0, 20))
+        # Функция генерации идеальных блоков с обводкой и тенями
+        def create_field(parent, x, y, label_key, entry_width=177):
+            # 1. Текстовый лейбл (идеально круглые углы через CTkButton)
+            lbl = ctk.CTkButton(parent, width=entry_width, height=34, corner_radius=16,
+                                text=localization.get(label_key), font=("Inter", 13),
+                                fg_color="#D9D9D9", border_width=1, border_color="white",
+                                text_color="black", text_color_disabled="black", state="disabled")
+            lbl.place(x=x, y=y)
 
-        ctk.CTkLabel(inner, text=localization.get("genre"), text_color="black", font=("Inter", 13)).grid(row=2, column=0, padx=10, pady=(0, 5), sticky="w")
-        ctk.CTkLabel(inner, text=localization.get("place"), text_color="black", font=("Inter", 13)).grid(row=2, column=1, padx=10, pady=(0, 5), sticky="w")
+            # 2. 1-пиксельная линия-тень под инпутом
+            shadow = ctk.CTkFrame(parent, width=entry_width, height=1, fg_color="#B0B0B0")
+            shadow.place(x=x + 2, y=y + 60 + 95)
 
-        self.entry_genre = ctk.CTkEntry(inner, width=220, height=45, fg_color="#D9D9D9", text_color="black", font=("Inter", 14))
-        self.entry_genre.grid(row=3, column=0, padx=10, pady=(0, 30))
-        
-        self.entry_place = ctk.CTkEntry(inner, width=220, height=45, fg_color="#D9D9D9", text_color="black", font=("Inter", 14))
-        self.entry_place.grid(row=3, column=1, padx=10, pady=(0, 30))
+            # 3. Фрейм-подложка для инпута
+            entry_background = ctk.CTkFrame(parent, width=entry_width, height=95, corner_radius=16,
+                                            fg_color="#D9D9D9", border_width=1, border_color="#B0B0B0")
+            entry_background.place(x=x, y=y + 60)
+            entry_background.pack_propagate(False)
 
-        ctk.CTkButton(inner, text=localization.get("add_book"), font=("Inter", 16, "bold"), fg_color="#B8A45F", text_color="black", width=160, height=50, corner_radius=10, command=self.save_new_book).grid(row=4, column=2, sticky="e")
-        ctk.CTkButton(inner, text=localization.get("cancel"), fg_color="transparent", text_color="gray", hover_color="#D9D9D9", font=("Inter", 16), command=self.modal_frame.destroy).grid(row=4, column=1, sticky="e", padx=10)
+            # 4. Само поле ввода (прозрачное)
+            entry = ctk.CTkEntry(entry_background, font=("Inter", 15), text_color="black", 
+                                 fg_color="transparent", border_width=0)
+            entry.pack(fill="both", expand=True, padx=15, pady=5)
+            
+            return entry
+
+        # Отрисовка полей ввода (Ряд 1)
+        self.entry_title = create_field(fields_wrap, x_col0, y_row1_lbl, "book_title", entry_width=245)
+        self.entry_author = create_field(fields_wrap, x_col1, y_row1_lbl, "author", entry_width=245)
+        self.entry_id = create_field(fields_wrap, x_col2, y_row1_lbl, "inv_num", entry_width=177)
+
+        # Отрисовка полей ввода (Ряд 2)
+        self.entry_genre = create_field(fields_wrap, x_col0, y_row2_lbl, "genre", entry_width=245)
+        self.entry_place = create_field(fields_wrap, x_col1, y_row2_lbl, "place", entry_width=245)
+
+        # --- КНОПКИ УПРАВЛЕНИЯ ---
+        btn_cancel = ctk.CTkButton(fields_wrap, text="ОТМЕНА", font=("Inter", 20, "bold"), 
+                                   fg_color="transparent", text_color="black", hover_color="#D9D9D9",
+                                   width=160, height=70, command=self.modal_frame.destroy)
+        btn_cancel.place(x=380, y=485)
+
+        btn_add_shadow = ctk.CTkFrame(fields_wrap, width=211, height=1, fg_color="#8A7A3E")
+        btn_add_shadow.place(x=545 + 2, y=485 + 70)
+
+        btn_add = ctk.CTkButton(fields_wrap, width=211, height=70, text="ДОБАВИТЬ КНИГУ", 
+                                fg_color="#BEAC64", text_color="white", hover_color="#A89755", 
+                                corner_radius=16, border_width=1, border_color="#8A7A3E", 
+                                font=("Inter", 18, "bold"), command=self.save_new_book)
+        btn_add.place(x=545, y=485)
+
 
     def save_new_book(self):
         title = self.entry_title.get().strip()
@@ -199,8 +232,8 @@ class MainPage(ctk.CTkFrame):
             if "ReportsPage" in self.controller.frames:
                 self.controller.frames["ReportsPage"].refresh_reports()
                 
+            # Уничтожаем окно напрямую
             self.modal_frame.destroy()
-
     def create_nav_btn(self, text, is_active=False, command=None):
         bg = "#BEAC64" if is_active else "transparent"
         btn = ctk.CTkButton(self.nav_zone, text=text, fg_color=bg, text_color="white", font=("Inter", 20), anchor="w", height=45, corner_radius=10, hover_color="#7C9A82", command=command)
