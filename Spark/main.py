@@ -58,7 +58,21 @@ class LibraryApp(ctk.CTk):
         
         # Возвращаем пользователя на страницу настроек
         self.show_frame("SettingsPage")
+    def change_global_theme(self, mode):
+        """Переключает тему CustomTkinter и обновляет fg_color у всех фреймов"""
+        if mode == "dark":
+            ctk.set_appearance_mode("dark")
+            bg_color = "#6D6D6D"  # Твой кастомный темный цвет
+        else:
+            ctk.set_appearance_mode("light")
+            bg_color = "#FFFFFF"  # Стандартный белый
 
+        # Проходимся по всем инициализированным страницам в системе
+        for page_name, page_instance in self.frames.items():
+            try:
+                page_instance.configure(fg_color=bg_color)
+            except Exception as e:
+                print(f"Не удалось перекрасить фрейм {page_name}: {e}")
 if __name__ == "__main__":
     app = LibraryApp()
     app.mainloop()
