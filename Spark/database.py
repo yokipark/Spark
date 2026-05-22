@@ -385,3 +385,55 @@ def add_book(inv_number, title, author, genre, place):
     
     # Это триггерит появление во вкладке "Последние действия" и на графиках отчетов!
     log_transaction(inv_number, title, "-", "Новая книга")
+
+def get_reader_current_books(reader_id):
+    """Вычисляет, какие инвентарные номера сейчас находятся на руках у читателя"""
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    
+    # Узнаем имя читателя по ID
+    cursor.execute("SELECT full_name FROM readers WHERE id = ?", (reader_id,))
+    res = cursor.fetchone()
+    if not res: 
+        conn.close()
+        return []
+    
+    r_name = res[0]
+    # Вытаскиваем всю его историю в хронологическом порядке
+    cursor.execute('''
+        SELECT inv_number, action_type 
+        FROM transactions 
+        WHERE reader_name = ?
+        ORDER BY id ASC
+    ''', (r_name,))
+    
+    held_books = set()
+    for inv, action in cursor.fetchall():
+        if action == 'Выдача':
+            held_books.add(inv)
+        elif action == 'Возврат':
+            held_books.discard(inv) # Удаляем из списка, если он её вернул
+            
+    conn.close()
+    return list(held_books)
+
+def get_current_reader_of_book(inv_number):
+    """Находит ID и Имя читателя, у которого сейчас находится данная книга"""
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT reader_name FROM transactions 
+        WHERE inv_number = ? AND action_type = 'Выдача'
+        ORDER BY id DESC LIMIT 1
+    ''', (inv_number,))
+    res = cursor.fetchone()
+    
+    if res:
+        reader_name = res[0]
+        cursor.execute("SELECT id FROM readers WHERE full_name = ?", (reader_name,))
+        r_res = cursor.fetchone()
+        conn.close()
+        return (r_res[0], reader_name) if r_res else (0, reader_name)
+        
+    conn.close()
+    return (0, "Неизвестно")
