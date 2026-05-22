@@ -6,7 +6,8 @@ LANGUAGES = {
         "export": "ЭКСПОРТ",
         "app_title_1": "Картотека",
         "app_title_2": "библиотекаря",
-        
+        "history": "История",
+        "lib_info": "ИНФОРМАЦИЯ О БИБЛИОТЕКЕ",
         # sidebar
         "main": "🏠     Главное",
         "books": "📋     Книжный фонд",
@@ -14,11 +15,23 @@ LANGUAGES = {
         "issue": "🕒     Выдача/Возврат",
         "reports": "📊     Отчеты",
         "settings": "⚙️     Настройки",
-
+        # Переводы для Issue/Return Page (Добавленное)
+        "reader_caps": "ЧИТАТЕЛИ",
+        "book_caps": "КНИГА",
+        "enter_fio_or_id": "Введите ФИО или ID...",
+        "enter_book_id": "Введите ID книги...",
+        "book_code_label": "Код книги",
+        "reader_id_label": "ID Читателя",
+        "history": "История",
+        "books_on_hand_text": "книг(и) на руках",
+        "user_books_title": "Книги в руках",
+        "no_history": "Нет истории",
+        "issue_btn": "ВЫДАЧА",
+        "return_btn": "ВОЗВРАТ",
         "librarian": "Библиотекарь",
         "profile": "ПРОФИЛЬ",
         "Login": "ВОЙТИ",
-
+        "reader":"Читатель",
         # login 
         "ID сотрудника": "ID сотрудника",
         "Пароль": "Пароль",
@@ -84,14 +97,17 @@ LANGUAGES = {
         "exp_success_title": "Экспорт завершен",
         "exp_success_msg": "Данные успешно выгружены в файл:\n{}\n\nИщите файл в папке 'exports/'",
         "exp_error_title": "Ошибка экспорта",
-        "exp_error_msg": "Не удалось выполнить экспорт:\n{}"
+        "exp_error_msg": "Не удалось выполнить экспорт:\n{}",
+        "enter_fio_or_id": "Введите ФИО или ID читателя",
+        "user_name": "Имя пользователя",
+        "readersx":"ЧИТАТЕЛИ",
     },
     "KG": {
         # Global
         "export": "ЭКСПОРТТОО",
         "app_title_1": "Картотека",
         "app_title_2": "китепканачы",
-        
+        "history":"История",
         # sidebar
         "main": "🏠 Башкы бет",
         "books": "📋 Китеп фонду",
@@ -99,10 +115,21 @@ LANGUAGES = {
         "issue": "🕒 Берүү/Кайтаруу",
         "reports": "📊 Отчеттор",
         "settings": "⚙️ Жөндөөлөр",
-
+        "readers":"ОКУРМАНДАР",
         "librarian": "Китепканачы",
         "profile": "ПРОФИЛЬ",
-
+        "reader_caps": "ОКУРМАНДАР",
+        "book_caps": "КИTЕП",
+        "enter_fio_or_id": "Аты-жөнүн же IDсин жазыңыз...",
+        "enter_book_id": "Китептин IDсин жазыңыз...",
+        "book_code_label": "Китептин коду",
+        "reader_id_label": "Окурмандын IDси",
+        "history": "Тарыхы",
+        "books_on_hand_text": "китеп колунда бар",
+        "user_books_title": "Колундагы китептер",
+        "no_history": "Тарыхы бош",
+        "issue_btn": "БЕРҮҮ",
+        "return_btn": "КАЙТАРУУ",
         # login
         "ID сотрудника": "Ишкердин IDси",
         "Пароль": "Пароль",
@@ -123,7 +150,8 @@ LANGUAGES = {
         "quick": "Тез",
         "actions": "Аракет",
         "time": "Убакыт",
-        
+        "reader":"Окурман",
+        "readersx":"Окурмандар",
         # bookfund 
         "Поиск по названию, автору или №...": "Аталышы, автору же № боюнча издөө...",
         "add_book": "КИТЕП КОШУУ",
@@ -169,15 +197,16 @@ LANGUAGES = {
         "exp_success_title": "Экспорт аяктады",
         "exp_success_msg": "Маалыматтар файлга ийгиликтүү жүктөлдү:\n{}\n\nФайлды 'exports/' папкасынан издеңиз",
         "exp_error_title": "Экспорт катасы",
-        "exp_error_msg": "Экспорттоо аткарылган жок:\n{}"
-
+        "exp_error_msg": "Экспорттоо аткарылган жок:\n{}",
+        "enter_fio_or_id": "окурмандын аты-жөнүн же IDсин жазыныз",
+    
     },
     "EN": {
         # Global
         "export": "EXPORT",
         "app_title_1": "Card Index",
         "app_title_2": "Librarian",
-        
+        "history": "History",
         # sidebar
         "main": "🏠 Dashboard",
         "books": "📋 Book Fund",
@@ -185,16 +214,29 @@ LANGUAGES = {
         "issue": "🕒 Issue/Return",
         "reports": "📊 Reports",
         "settings": "⚙️ Settings",
-
+        "reader":"Reader",
         "librarian": "Librarian",
         "profile": "PROFILE",
-
+        "readersx":"READERS",
+        "reader": "Reader",
         # login
         "ID сотрудника": "Worker ID",
         "Пароль": "Password",
         "Login": "LOGIN",
         "incorrect_password": "Incorrect ID or password!",
-
+        # Переводы для Issue/Return Page (Добавленное)
+        "reader_caps": "READERS",
+        "book_caps": "BOOK",
+        "enter_fio_or_id": "Enter name or ID...",
+        "enter_book_id": "Enter book ID...",
+        "book_code_label": "Book Code",
+        "reader_id_label": "Reader ID",
+        "history": "History",
+        "books_on_hand_text": "books on hand",
+        "user_books_title": "Books on hand",
+        "no_history": "No history",
+        "issue_btn": "ISSUE",
+        "return_btn": "RETURN",
         # dashboard 
         "books_on_loan": "Books on loan",
         "overdue": "Overdue",
@@ -255,7 +297,8 @@ LANGUAGES = {
         "exp_success_title": "Export Completed",
         "exp_success_msg": "Data successfully exported to file:\n{}\n\nLook for the file in 'exports/' folder",
         "exp_error_title": "Export Error",
-        "exp_error_msg": "Failed to complete export:\n{}"
+        "exp_error_msg": "Failed to complete export:\n{}",
+        "enter_fio_or_id": "Enter user name or ID",
     }
 }
 
@@ -266,7 +309,10 @@ def set_lang(lang_code):
     if lang_code in LANGUAGES:
         current_lang = lang_code
 
-def get(key):
-    """Возвращает перевод по ключу."""
-    return LANGUAGES[current_lang].get(key, key)
-
+def get(key, default_value=None):
+    """Возвращает перевод по ключу. Если ключа нет, возвращает default_value или сам key."""
+    # Если default_value не передан, используем сам key в качестве резервного текста
+    if default_value is None:
+        default_value = key
+        
+    return LANGUAGES[current_lang].get(key, default_value)
