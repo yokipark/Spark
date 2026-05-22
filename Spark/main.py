@@ -1,5 +1,5 @@
 import customtkinter as ctk
-import database  # <-- 1. Import our new database file
+import database  
 
 from pages.login import LoginPage
 from pages.book_fund import MainPage
@@ -9,14 +9,13 @@ from pages.issue_return import IssueReturnPage
 from pages.reports import ReportsPage
 from pages.settings import SettingsPage
 from pages.loading import LoadingPage
-# 2. Run the initialization before the app starts
 database.init_db() 
 
 class LibraryApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Картотека")
-        self.geometry("1200x800")
+        self.geometry("1440x1024")
         
         # Главный контейнер
         self.container = ctk.CTkFrame(self)
