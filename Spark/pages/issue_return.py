@@ -58,6 +58,10 @@ class IssueReturnPage(ctk.CTkFrame):
         self.profile_zone.pack(side="bottom", fill="x")
 
         user_path = os.path.join(self.assets_dir, "User_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "user_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "User_cicrle.png")
         try:
             pil_user = Image.open(user_path)
             ctk_user = ctk.CTkImage(light_image=pil_user, dark_image=pil_user, size=(45, 45))
@@ -119,7 +123,11 @@ class IssueReturnPage(ctk.CTkFrame):
         self.user_card = ctk.CTkFrame(left_col, width=416, height=576, fg_color="#D9D9D9", corner_radius=24, border_width=1, border_color="#B0B0B0")
         self.user_card.pack()
         self.user_card.pack_propagate(False)
-
+        user_path = os.path.join(self.assets_dir, "User_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "user_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "User_cicrle.png")
         try:
             pil_img = Image.open(user_path)
             ctk_icon = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(120, 120))
