@@ -118,7 +118,7 @@ class ReaderPage(ctk.CTkFrame):
         self.table_frame = ctk.CTkFrame(self.content_container, fg_color="#D9D9D9", corner_radius=16, border_width=1, border_color="black")
         self.table_frame.pack(fill="both", expand=True)
 
-        self.headers = [localization.get("inv_num"), localization.get("reader_name"), "Кол-во книг", "Прочитано"]
+        self.headers = [localization.get("inv_num"), localization.get("reader_name"), localization.get("books_count"), localization.get("books_read")]
         self.load_data()
 
     # --- ЛОГИКА ТАБЛИЦЫ ---
@@ -166,7 +166,7 @@ class ReaderPage(ctk.CTkFrame):
         left_fields_frame.grid(row=0, column=0, sticky="nsew", padx=(40, 20), pady=(40, 20))
 
         # 1. ФИО ЧИТАТЕЛЯ
-        lbl_fio = ctk.CTkLabel(left_fields_frame, text="Введите имя читателя", font=("Inter", 13), text_color="black", fg_color="#C4C4C4", corner_radius=10, height=28)
+        lbl_fio = ctk.CTkLabel(left_fields_frame, text=localization.get("enter_reader_name"), font=("Inter", 13), text_color="black", fg_color="#C4C4C4", corner_radius=10, height=28)
         lbl_fio.pack(anchor="w", pady=(0, 6), padx=5)
         
         self.name_entry = ctk.CTkEntry(left_fields_frame, height=45, corner_radius=14, fg_color="#F5F4F2", text_color="black", border_width=1, border_color="#B0B0B0", font=("Inter", 15))
@@ -192,7 +192,7 @@ class ReaderPage(ctk.CTkFrame):
         date_sub_frame = ctk.CTkFrame(row_inputs, fg_color="transparent")
         date_sub_frame.grid(row=0, column=1, sticky="nsew", padx=(10, 0))
 
-        lbl_date = ctk.CTkLabel(date_sub_frame, text="Дата регистрации", font=("Inter", 13), text_color="black", fg_color="#C4C4C4", corner_radius=10, height=28)
+        lbl_date = ctk.CTkLabel(date_sub_frame, text=localization.get("reg_date"), font=("Inter", 13), text_color="black", fg_color="#C4C4C4", corner_radius=10, height=28)
         lbl_date.pack(anchor="w", pady=(0, 6), padx=5)
 
         current_date_str = database.datetime.now().strftime("%d.%m.%Y")
@@ -219,7 +219,7 @@ class ReaderPage(ctk.CTkFrame):
             profile_circle = ctk.CTkLabel(right_avatar_frame, text="👤", font=("Inter", 100), text_color="#BEAC64")
             profile_circle.pack(pady=(20, 5))
 
-        ctk.CTkLabel(right_avatar_frame, text="новый читатель", font=("Inter", 14), text_color="gray").pack()
+        ctk.CTkLabel(right_avatar_frame, text=localization.get("new_reader"), font=("Inter", 14), text_color="gray").pack()
 
         # =========================================================
         # НИЖНЯЯ ЧАСТЬ: КНОПКИ УПРАВЛЕНИЯ
@@ -227,7 +227,7 @@ class ReaderPage(ctk.CTkFrame):
         btn_cancel = ctk.CTkButton(self.modal, text=localization.get("cancel").upper(), fg_color="transparent", text_color="black", hover_color="#D9D9D9", width=140, height=50, font=("Inter", 18, "bold"), command=self.modal.destroy)
         btn_cancel.place(x=290, y=360)
 
-        btn_add = ctk.CTkButton(self.modal, text="ДОБАВИТЬ", fg_color="#BEAC64", text_color="white", hover_color="#A89755", width=180, height=50, corner_radius=14, font=("Inter", 18, "bold"), command=self.save_new_reader)
+        btn_add = ctk.CTkButton(self.modal, text=localization.get("add_btn"), fg_color="#BEAC64", text_color="white", hover_color="#A89755", width=180, height=50, corner_radius=14, font=("Inter", 18, "bold"), command=self.save_new_reader)
         btn_add.place(x=455, y=360)
         
     def save_new_reader(self):
