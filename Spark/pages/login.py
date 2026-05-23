@@ -16,7 +16,7 @@ class LoginPage(ctk.CTkFrame):
 
         self.title_label = ctk.CTkLabel(
             self.main_card,
-            text="Картотека", 
+            text=localization.get("app_title_1"), 
             font=("Inter", 24), 
             text_color="black"
         )
@@ -24,7 +24,7 @@ class LoginPage(ctk.CTkFrame):
 
         self.subtitle = ctk.CTkLabel(
             self.main_card, 
-            text="Библиотекаря", 
+            text=localization.get("app_title_2"), 
             font=("Inter", 24), 
             text_color="black"
         )
