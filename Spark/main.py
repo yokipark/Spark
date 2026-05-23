@@ -73,6 +73,15 @@ class LibraryApp(ctk.CTk):
                 page_instance.configure(fg_color=bg_color)
             except Exception as e:
                 print(f"Не удалось перекрасить фрейм {page_name}: {e}")
+    def update_global_sidebar_color(self, color):
+        """Updates the sidebar fg_color on all loaded pages."""
+        # Loop through all the pages that have been created and are in self.frames
+        for page_name, page_instance in self.frames.items():
+            # Check if the page actually has a sidebar (just in case)
+            if hasattr(page_instance, 'sidebar'):
+                # Configure (update) the foreground color of that page's sidebar
+                page_instance.sidebar.configure(fg_color=color)
+                
 if __name__ == "__main__":
     app = LibraryApp()
     app.mainloop()
