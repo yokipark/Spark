@@ -40,8 +40,8 @@ class SettingsPage(ctk.CTkFrame):
 
         text_frame = ctk.CTkFrame(self.logo_zone, fg_color="transparent")
         text_frame.pack(side="left", fill="y")
-        ctk.CTkLabel(text_frame, text="Картотека", font=("Inter", 24, "bold"), text_color="#FFFFFF").pack(anchor="w")
-        ctk.CTkLabel(text_frame, text="библиотекаря", font=("Inter", 14), text_color="#E6C619").pack(anchor="w")
+        ctk.CTkLabel(text_frame, text=localization.get("app_title_1"), font=("Inter", 24, "bold"), text_color="#FFFFFF").pack(anchor="w")
+        ctk.CTkLabel(text_frame, text=localization.get("app_title_1"), font=("Inter", 14), text_color="#E6C619").pack(anchor="w")
 
         # --- НАВИГАЦИЯ ---
         self.nav_zone = ctk.CTkFrame(self.sidebar_inner, fg_color="transparent")
@@ -155,18 +155,25 @@ class SettingsPage(ctk.CTkFrame):
         row1 = ctk.CTkFrame(color_grid, fg_color="transparent")
         row1.pack(fill="x", anchor="w", pady=4)
         
-        row1_files = ["Vector 4.png", "Vector 6.png", "Vector 8.png", "Vector 9@2x.png"]
-        for f_name in row1_files:
-            img_path = os.path.join(self.assets_dir, f_name)
+        colors_meta = [
+            {"file": "Vector 4.png", "bg": "#FFCC00"},
+            {"file": "Vector 6.png", "bg": "#354839"},
+            {"file": "Vector 8.png", "bg": "#000000"},
+            {"file": "Vector 9@2x.png", "bg": "#FF0000"}
+        ]
+        
+        for c_info in colors_meta:
+            img_path = os.path.join(self.assets_dir, c_info["file"])
             try:
                 pil_color = Image.open(img_path)
                 ctk_color_img = ctk.CTkImage(light_image=pil_color, dark_image=pil_color, size=(48, 44))
-                btn = ctk.CTkButton(row1, image=ctk_color_img, text="", width=48, height=44, fg_color="transparent", hover_color="#C4C4C4")
+                btn = ctk.CTkButton(row1, image=ctk_color_img, text="", width=48, height=44, 
+                                     fg_color="transparent", hover_color="#C4C4C4", 
+                                     command=lambda c=c_info["bg"]: self.controller.update_global_sidebar_color(c))
                 btn.pack(side="left", padx=4)
             except Exception:
                 pass
 
-        # Ряд 2 (Vector 10)
         row2 = ctk.CTkFrame(color_grid, fg_color="transparent")
         row2.pack(fill="x", anchor="w", pady=4)
         
@@ -174,7 +181,9 @@ class SettingsPage(ctk.CTkFrame):
             v10_path = os.path.join(self.assets_dir, "Vector 10.png")
             pil_v10 = Image.open(v10_path)
             ctk_v10_img = ctk.CTkImage(light_image=pil_v10, dark_image=pil_v10, size=(48, 44))
-            btn_v10 = ctk.CTkButton(row2, image=ctk_v10_img, text="", width=48, height=44, fg_color="transparent", hover_color="#C4C4C4")
+            btn_v10 = ctk.CTkButton(row2, image=ctk_v10_img, text="", width=48, height=44, 
+                                    fg_color="transparent", hover_color="#C4C4C4",
+                                    command=lambda: self.controller.update_global_sidebar_color("#2A2A2A"))
             btn_v10.pack(side="left", padx=4)
         except Exception:
             pass
