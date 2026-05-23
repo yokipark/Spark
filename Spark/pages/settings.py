@@ -59,10 +59,15 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_zone.pack(side="bottom", fill="x")
 
         user_path = os.path.join(self.assets_dir, "User_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "user_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "User_cicrle.png")
         try:
             pil_user = Image.open(user_path)
             ctk_user = ctk.CTkImage(light_image=pil_user, dark_image=pil_user, size=(45, 45))
             ctk.CTkLabel(self.profile_zone, image=ctk_user, text="").pack(side="left", padx=(0, 15))
+
         except Exception:
             ctk.CTkLabel(self.profile_zone, text="👤", font=("Inter", 24)).pack(side="left", padx=(0, 15))
 
@@ -101,7 +106,11 @@ class SettingsPage(ctk.CTkFrame):
         profile_card.pack_propagate(False)
 
         ctk.CTkLabel(profile_card, text=localization.get("profile", "ПРОФИЛЬ").upper(), font=("Inter", 18, "bold"), text_color="black").place(x=25, y=20)
-        
+        user_path = os.path.join(self.assets_dir, "User_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "user_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "User_cicrle.png")
         try:
             pil_profile = Image.open(user_path)
             ctk_profile = ctk.CTkImage(light_image=pil_profile, dark_image=pil_profile, size=(90, 90))
@@ -145,7 +154,7 @@ class SettingsPage(ctk.CTkFrame):
         self.theme_switch.pack(side="left")
 
         # Надпись «Акцентные цвета»
-        ctk.CTkLabel(int_box, text="Акцентные цвета", font=("Inter", 15, "bold"), text_color="black").pack(pady=(20, 10), anchor="w", padx=25)
+        ctk.CTkLabel(int_box, text=localization.get("accent_colors"), font=("Inter", 15, "bold"), text_color="black").pack(pady=(20, 10), anchor="w", padx=25)
 
         # Сетка для размещения ассетов цветов в 2 ряда по макету
         color_grid = ctk.CTkFrame(int_box, fg_color="transparent")
