@@ -42,8 +42,8 @@ class DashboardPage(ctk.CTkFrame):
         # 2. Текст справа от иконки
         text_frame = ctk.CTkFrame(self.logo_zone, fg_color="transparent")
         text_frame.pack(side="left", fill="y")
-        ctk.CTkLabel(text_frame, text="Картотека", font=("Inter", 24, "bold"), text_color="#FFFFFF").pack(anchor="w")
-        ctk.CTkLabel(text_frame, text="библиотекаря", font=("Inter", 14), text_color="#E6C619").pack(anchor="w", pady=(0, 0))
+        ctk.CTkLabel(text_frame, text=localization.get("app_title_1"), font=("Inter", 24, "bold"), text_color="#FFFFFF").pack(anchor="w")
+        ctk.CTkLabel(text_frame, text=localization.get("app_title_2"), font=("Inter", 14), text_color="#E6C619").pack(anchor="w", pady=(0, 0))
 
 
         # --- НАВИГАЦИЯ ---
