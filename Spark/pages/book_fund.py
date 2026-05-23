@@ -33,9 +33,10 @@ class MainPage(ctk.CTkFrame):
             pil_logo = Image.open(logo_path)
             ctk_logo = ctk.CTkImage(light_image=pil_logo, dark_image=pil_logo, size=(50, 50))
             ctk.CTkLabel(self.logo_zone, image=ctk_logo, text="").pack(side="left", padx=(0, 15))
-        except:
-            pass
-        
+        except Exception as e:
+            print(f"Ошибка логотипа: {e}")
+            ctk.CTkLabel(self.logo_zone, text="📖", font=("Inter", 32)).pack(side="left", padx=(0, 15))
+
         text_frame = ctk.CTkFrame(self.logo_zone, fg_color="transparent")
         text_frame.pack(side="left", fill="y")
         ctk.CTkLabel(text_frame, text=localization.get("app_title_1"), font=("Inter", 24, "bold"), text_color="#FFFFFF").pack(anchor="w")
@@ -55,8 +56,12 @@ class MainPage(ctk.CTkFrame):
         # --- ПРОФИЛЬ ---
         self.profile_zone = ctk.CTkFrame(self.sidebar_inner, fg_color="transparent")
         self.profile_zone.pack(side="bottom", fill="x")
-        
+
         user_path = os.path.join(self.assets_dir, "User_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "user_circle.png")
+        if not os.path.exists(user_path):
+            user_path = os.path.join(self.assets_dir, "User_cicrle.png")
         try:
             pil_user = Image.open(user_path)
             ctk_user = ctk.CTkImage(light_image=pil_user, dark_image=pil_user, size=(45, 45))
