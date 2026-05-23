@@ -98,7 +98,8 @@ def add_reader(full_name, inv_card, reg_date):
 def get_all_readers():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    cursor.execute('SELECT id, full_name, books_current, books_read FROM readers')
+    # ИСПРАВЛЕНО: Выбираем inv_card вместо id
+    cursor.execute('SELECT inv_card, full_name, books_current, books_read FROM readers')
     rows = cursor.fetchall()
     conn.close()
     return rows
@@ -193,29 +194,29 @@ def get_book_by_inv(inv_number):
 def get_reader_by_id(reader_id):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    cursor.execute("SELECT full_name FROM readers WHERE id = ?", (reader_id,))
+    # ИСПРАВЛЕНО: Фильтруем по inv_card
+    cursor.execute("SELECT full_name FROM readers WHERE inv_card = ?", (reader_id,))
     res = cursor.fetchone()
     conn.close()
     return res[0] if res else None
-
 def process_issue_db(inv_number, title, reader_id, reader_name):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("UPDATE books SET status = 'Выдана' WHERE inv_number = ?", (inv_number,))
-    cursor.execute("UPDATE readers SET books_current = books_current + 1 WHERE id = ?", (reader_id,))
+    # ИСПРАВЛЕНО: Обновляем статистику пользователя по его inv_card
+    cursor.execute("UPDATE readers SET books_current = books_current + 1 WHERE inv_card = ?", (reader_id,))
     conn.commit()
     conn.close()
     log_transaction(inv_number, title, reader_name, "Выдача")
-
 def process_return_db(inv_number, title, reader_id, reader_name):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("UPDATE books SET status = 'В наличии' WHERE inv_number = ?", (inv_number,))
-    cursor.execute("UPDATE readers SET books_current = MAX(0, books_current - 1), books_read = books_read + 1 WHERE id = ?", (reader_id,))
+    # ИСПРАВЛЕНО: Списываем книгу по inv_card
+    cursor.execute("UPDATE readers SET books_current = MAX(0, books_current - 1), books_read = books_read + 1 WHERE inv_card = ?", (reader_id,))
     conn.commit()
     conn.close()
     log_transaction(inv_number, title, reader_name, "Возврат")
-
 def search_books(query):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -233,10 +234,11 @@ def search_readers(query):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     search_term = f"%{query}%"
+    # ИСПРАВЛЕНО: Ищем и возвращаем inv_card
     cursor.execute('''
-        SELECT id, full_name, books_current, books_read 
+        SELECT inv_card, full_name, books_current, books_read 
         FROM readers 
-        WHERE full_name LIKE ? OR id LIKE ?
+        WHERE full_name LIKE ? OR inv_card LIKE ?
     ''', (search_term, search_term))
     rows = cursor.fetchall()
     conn.close()
@@ -417,8 +419,8 @@ def get_reader_current_books(reader_id):
     conn.close()
     return list(held_books)
 
+
 def get_current_reader_of_book(inv_number):
-    """Находит ID и Имя читателя, у которого сейчас находится данная книга"""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute('''
@@ -427,13 +429,14 @@ def get_current_reader_of_book(inv_number):
         ORDER BY id DESC LIMIT 1
     ''', (inv_number,))
     res = cursor.fetchone()
-    
+
     if res:
         reader_name = res[0]
-        cursor.execute("SELECT id FROM readers WHERE full_name = ?", (reader_name,))
+        # ИСПРАВЛЕНО: Получаем inv_card должника, а не скрытый id
+        cursor.execute("SELECT inv_card FROM readers WHERE full_name = ?", (reader_name,))
         r_res = cursor.fetchone()
         conn.close()
         return (r_res[0], reader_name) if r_res else (0, reader_name)
-        
+
     conn.close()
     return (0, "Неизвестно")
