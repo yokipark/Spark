@@ -160,22 +160,22 @@ class DashboardPage(ctk.CTkFrame):
         self.actions_box.pack_propagate(False)
 
         ctk.CTkLabel(self.actions_box, text=f"{localization.get('quick')} \n {localization.get('actions')}",
-                     font=("Inter", 32), text_color="black").pack(pady=(7, 7))
+                     font=("Inter", 28), text_color="black").pack(pady=7)
 
         btn_issue = ctk.CTkButton(self.actions_box, text=localization.get("quick_issue"), fg_color="#304146", height=45,
                                   corner_radius=20, border_width=1, border_color="#1F2A2E", font=("Inter", 14),
                                   command=lambda: controller.show_frame("IssueReturnPage"))
-        btn_issue.pack(pady=8, padx=20, fill="x")
+        btn_issue.pack(pady=6, padx=20, fill="x")
 
         btn_return = ctk.CTkButton(self.actions_box, text=localization.get("accept_return"), fg_color="#304146",
                                    height=45, corner_radius=20, border_width=1, border_color="#1F2A2E",
                                    font=("Inter", 14), command=lambda: controller.show_frame("IssueReturnPage"))
-        btn_return.pack(pady=8, padx=20, fill="x")
+        btn_return.pack(pady=6, padx=20, fill="x")
 
         btn_add_reader = ctk.CTkButton(self.actions_box, text=localization.get("add_reader"), fg_color="#304146",
                                        height=45, corner_radius=20, border_width=1, border_color="#1F2A2E",
                                        font=("Inter", 14), command=lambda: controller.show_frame("ReaderPage"))
-        btn_add_reader.pack(pady=8, padx=20, fill="x")
+        btn_add_reader.pack(pady=6, padx=20, fill="x")
 
         # --- 4. ТАБЛИЦА ТРАНЗАКЦИЙ ---
         self.table_box = ctk.CTkFrame(self.right_container, height=222, fg_color="#D9D9D9", corner_radius=16,
