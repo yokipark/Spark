@@ -10,13 +10,12 @@ class DashboardPage(ctk.CTkFrame):
         super().__init__(parent, fg_color="#FFFFFF")
         self.controller = controller
 
-        # Настраиваем пуленепробиваемый путь к папке assets
         current_dir = os.path.dirname(os.path.abspath(__file__))
         self.assets_dir = os.path.join(os.path.dirname(current_dir), "assets")
 
-        # ==========================================
+        
         # 1. SIDEBAR (Width: 370px)
-        # ==========================================
+        
         self.sidebar = ctk.CTkFrame(self, width=370, corner_radius=0, fg_color="#294730")
         self.sidebar.pack(side="left", fill="y")
         self.sidebar.pack_propagate(False) 
@@ -81,9 +80,9 @@ class DashboardPage(ctk.CTkFrame):
         ctk.CTkLabel(profile_text_frame, text="СЕЗИМАЙ", text_color="white", font=("Inter", 14, "bold")).pack(anchor="w")
         ctk.CTkLabel(profile_text_frame, text=localization.get('librarian'), text_color="#BEAC64", font=("Inter", 14)).pack(anchor="w")
 
-        # ==========================================
+     
         # 2. RIGHT CONTAINER (Responsive Grid Layout)
-        # ==========================================
+
         self.right_container = ctk.CTkFrame(self, fg_color="transparent")
         self.right_container.pack(side="right", fill="both", expand=True)
 
